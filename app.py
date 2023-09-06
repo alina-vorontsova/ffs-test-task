@@ -1,12 +1,18 @@
 from main import app, socketio
 from common import (
-    db, db_url, 
-    TEST_USERNAME, TEST_PASSWORD, 
-    TEST_USERNAME2, TEST_PASSWORD2, 
-    TEST_GAME_ID, 
-    TEST_USER1_ID, TEST_USER2_ID, 
-    TEST_USER1_SHAPE, TEST_USER2_SHAPE, 
-    TEST_USER1_RESULT, TEST_USER2_RESULT
+    db,
+    db_url,
+    TEST_USERNAME,
+    TEST_PASSWORD,
+    TEST_USERNAME2,
+    TEST_PASSWORD2,
+    TEST_GAME_ID,
+    TEST_USER1_ID,
+    TEST_USER2_ID,
+    TEST_USER1_SHAPE,
+    TEST_USER2_SHAPE,
+    TEST_USER1_RESULT,
+    TEST_USER2_RESULT
 )
 
 
@@ -24,7 +30,7 @@ def init_game():
     from game.game_db import Game, GameActPerUser
 
     if Game.find_by_id(TEST_GAME_ID) is None:
-        Game.create(id=TEST_GAME_ID)
+        Game.create(game_id=TEST_GAME_ID)
 
     GameActPerUser.create(game_id=TEST_GAME_ID, user_id=TEST_USER1_ID, shape=TEST_USER1_SHAPE, result=TEST_USER1_RESULT)
     GameActPerUser.create(game_id=TEST_GAME_ID, user_id=TEST_USER2_ID, shape=TEST_USER2_SHAPE, result=TEST_USER2_RESULT)

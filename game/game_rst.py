@@ -42,10 +42,8 @@ class Games(Resource):
 
     @controller.jwt_authorizer(User)
     @controller.marshal_with(Game.MainData)
-    def get(self):
-        if bool(Game.get_all(session["user_id"])) is False:
-            return controller.abort(404, "no games were found")
-        return Game.get_all(session["user_id"])
+    def get(self, user: User):
+        return Game.get_all(user_id=user.id)
 
 
 @controller.route("/all-detailed/")
@@ -53,7 +51,5 @@ class GamesDetailed(Resource):
 
     @controller.jwt_authorizer(User)
     @controller.marshal_with(GameActPerUser.MainData)
-    def get(self):
-        if bool(GameActPerUser.get_all(session["user_id"])) is False:
-            return controller.abort(404, "no games were found")
-        return GameActPerUser.get_all(session["user_id"])
+    def get(self, user: User):
+        return GameActPerUser.get_all(user_id=user.id)

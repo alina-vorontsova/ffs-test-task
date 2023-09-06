@@ -11,9 +11,9 @@ from common import Base, db, User
 
 
 class Shapes(TypeEnum):
-    ROCK = 'ROCK'
-    PAPER = 'PAPER'
-    SCISSORS = 'SCISSORS'
+    ROCK = "ROCK"
+    PAPER = "PAPER"
+    SCISSORS = "SCISSORS"
 
     @classmethod
     def list(cls) -> list:
@@ -44,13 +44,13 @@ class Game(Base):
         return ''.join(random.choices(characters, k=10))
 
     @classmethod
-    def create(cls, id: int = None) -> Game | None:
+    def create(cls, game_id: int = None) -> Game | None:
         room_code = cls.generate_room_code()
-        return super().create(room_code=room_code, id=id)
+        return super().create(room_code=room_code, game_id=id)
 
     @classmethod
-    def find_by_id(cls, id: int) -> Game | None:
-        return db.get_first(select(cls).filter_by(id=id))
+    def find_by_id(cls, game_id: int) -> Game | None:
+        return db.get_first(select(cls).filter_by(game_id=id))
 
     @classmethod
     def find_by_room_code(cls, room_code: str) -> Game | None:
@@ -75,8 +75,8 @@ class GameActPerUser(Base):
         ForeignKey("users.id"),
         nullable=False
     )
-    shape: Column | Enum = Column(Enum(Shapes))
-    result: Column | Enum = Column(Enum(GameResults))
+    shape: Column | Shapes = Column(Enum(Shapes))
+    result: Column | GameResults = Column(Enum(GameResults))
 
     game: relationship = relationship(Game)
     user: relationship = relationship(User)

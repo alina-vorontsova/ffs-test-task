@@ -11,6 +11,7 @@ controller = EventController()
 @controller.route()
 class RoomEventSpace(EventSpace):
 
+    @controller.jwt_authorizer(User)
     @controller.argument_parser(User.MainData)
     @controller.mark_duplex(Game.MainData, use_event=True)
     @controller.marshal_ack(Game.MainData)
@@ -18,14 +19,17 @@ class RoomEventSpace(EventSpace):
         game = Game.create()
         join_room(game.room_code)
         event.emit_convert(
+            game,
             data={'room_code': game.room_code},
             room=game.room_code,
             include_self=True)
 
+    @controller.jwt_authorizer(User)
     @controller.argument_parser(User.MainData)
     def join(self, user: User, room_code: str):
         join_room(room_code)
 
+    @controller.jwt_authorizer(User)
     @controller.argument_parser(User.MainData)
     def leave(self, user: User, room_code: str):
         leave_room(room_code)
@@ -52,6 +56,7 @@ class RoomEventSpace(EventSpace):
         else:
             game_user.result, game_enemy.result = 'WIN', 'LOSE'
 
+    @controller.jwt_authorizer(User)
     @controller.argument_parser()
     @controller.mark_duplex(GameActPerUser.MainData, use_event=True)
     @controller.marshal_ack(GameActPerUser.MainData)
@@ -70,5 +75,7 @@ class RoomEventSpace(EventSpace):
         if enemys_shape:
             self.get_results(game_id, user.id, shape, enemy.id, enemys_shape)
             return event.emit_convert(
+                game,
                 room=room_code,
-                include_self=True)
+                include_self=True
+            )

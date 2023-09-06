@@ -25,4 +25,4 @@ socketio = SocketIO(
     engineio_logger=True,
     remove_ping_pong_logs=True,
 )
-socketio.add_namespace("/game/", game_events, protected=True)
+socketio.add_namespace("game", game_events, protected=True)
